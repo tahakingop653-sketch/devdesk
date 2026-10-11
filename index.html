@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="DevDesk is a free, open-source browser toolkit for learning and everyday web development.">
+<title>DevDesk — Open Developer Workspace</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2e;--panel2:#18233b;--text:#edf2ff;--muted:#aab6d3;--line:#293754;--accent:#75e0c1;--accent2:#8db5ff;--danger:#ff9d9d}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0%,#172646 0,transparent 35%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:24px max(20px,calc((100% - 1180px)/2));border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{font-weight:800;font-size:1.25rem;letter-spacing:-.04em}.brand span{color:var(--accent)}.tag{color:var(--muted);font-size:.9rem}
+main{max-width:1180px;margin:34px auto;padding:0 20px}.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:24px}.eyebrow{color:var(--accent);text-transform:uppercase;font-weight:800;letter-spacing:.13em;font-size:.75rem}h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.04;letter-spacing:-.06em;margin:8px 0 12px}.hero p{max-width:650px;color:var(--muted);margin:0}.pill{border:1px solid #3e5b67;border-radius:999px;padding:7px 12px;color:var(--accent);font-size:.8rem;white-space:nowrap}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 14px}.tab,button{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:10px 14px;border-radius:10px;cursor:pointer;font:inherit}.tab[aria-selected=true],button.primary{background:var(--accent);border-color:var(--accent);color:#071711;font-weight:750}.workspace{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);gap:16px}.panel{background:rgba(18,26,46,.92);border:1px solid var(--line);border-radius:16px;overflow:hidden;min-width:0}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}.panel-head h2{font-size:.95rem;margin:0}.panel-body{padding:16px}textarea,input{width:100%;background:#080d19;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}textarea{min-height:360px;resize:vertical}iframe{width:100%;height:405px;border:0;background:white}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.small{font-size:.82rem;color:var(--muted)}.tool-view{display:none}.tool-view.active{display:block}.json-output{white-space:pre-wrap;overflow-wrap:anywhere;background:#080d19;border:1px solid var(--line);border-radius:10px;padding:14px;min-height:160px;font:13px/1.6 ui-monospace,monospace}.snippets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.snippet{padding:15px;border:1px solid var(--line);border-radius:12px;background:#0d1426}.snippet h3{font-size:.95rem;margin:0 0 6px}.snippet p{color:var(--muted);font-size:.85rem;margin:0 0 12px}footer{max-width:1180px;margin:28px auto 40px;padding:0 20px;color:var(--muted);font-size:.82rem}
+@media(max-width:800px){.workspace{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}.snippets{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}textarea{min-height:270px}}
+</style>
+</head>
+<body>
+<header><div class="brand">Dev<span>Desk</span></div><div class="tag">A small, local-first toolkit for web developers</div></header>
+<main>
+<section class="hero"><div><div class="eyebrow">Open-source starter project</div><h1>Your everyday<br>developer workspace.</h1><p>A lightweight collection of browser-based tools for experimenting with HTML, CSS and JavaScript, formatting JSON, and saving useful snippets. No account or backend required.</p></div><div class="pill">Free · Browser-based · Beginner-friendly</div></section>
+<nav class="tabs" aria-label="Tools">
+<button class="tab" data-tab="playground" aria-selected="true">Code Playground</button>
+<button class="tab" data-tab="json" aria-selected="false">JSON Formatter</button>
+<button class="tab" data-tab="snippets" aria-selected="false">Snippet Library</button>
+</nav>
+<section id="playground" class="tool-view active">
+<div class="workspace">
+<div class="panel"><div class="panel-head"><h2>HTML editor</h2><span class="small">Edit, then run</span></div><div class="panel-body"><textarea id="code" spellcheck="false" aria-label="HTML code editor"><!doctype html>
+<html>
+<head>
+  <style>
+    body { font-family: system-ui; padding: 24px; color: #17233b; }
+    h1 { color: #087f68; }
+    button { padding: 10px 14px; border: 0; border-radius: 8px; background: #087f68; color: white; }
+  </style>
+</head>
+<body>
+  <h1>Hello, developer!</h1>
+  <p>Edit this HTML, CSS, or JavaScript and click Run Preview.</p>
+  <button onclick="alert('It works!')">Test button</button>
+</body>
+</html></textarea><div class="actions"><button class="primary" id="run">Run preview</button><button id="reset">Reset example</button></div><p class="small">Preview runs in a separate sandboxed frame. Do not paste code you do not trust.</p></div></div>
+<div class="panel"><div class="panel-head"><h2>Live preview</h2><span class="small">Output</span></div><iframe id="preview" title="Code preview" sandbox="allow-scripts"></iframe></div>
+</div></section>
+<section id="json" class="tool-view"><div class="panel"><div class="panel-head"><h2>JSON formatter & validator</h2><span class="small">Runs locally in your browser</span></div><div class="panel-body"><textarea id="json-input" aria-label="JSON input" style="min-height:190px">{"project":"DevDesk","openSource":true,"tools":["playground","formatter","snippets"]}</textarea><div class="actions"><button class="primary" id="format-json">Format JSON</button><button id="minify-json">Minify JSON</button><button id="clear-json">Clear</button></div><p id="json-status" class="small" role="status">Paste JSON and choose an action.</p><pre id="json-output" class="json-output"></pre></div></div></section>
+<section id="snippets" class="tool-view"><div class="panel"><div class="panel-head"><h2>Starter snippets</h2><span class="small">Copy into your project</span></div><div class="panel-body"><div class="snippets">
+<article class="snippet"><h3>Responsive card</h3><p>A simple content card with flexible sizing.</p><button data-copy="card">Copy snippet</button><pre id="snippet-card" hidden>.card { padding: 1.25rem; border-radius: 1rem; border: 1px solid #ddd; max-width: 32rem; }</pre></article>
+<article class="snippet"><h3>Center with Flexbox</h3><p>Center content on both axes.</p><button data-copy="flex">Copy snippet</button><pre id="snippet-flex" hidden>.container { display: flex; align-items: center; justify-content: center; min-height: 100vh; }</pre></article>
+<article class="snippet"><h3>Safe element creation</h3><p>Create text without inserting raw HTML.</p><button data-copy="text">Copy snippet</button><pre id="snippet-text" hidden>const item = document.createElement("p");\nitem.textContent = "Hello!";\ndocument.body.append(item);</pre></article>
+<article class="snippet"><h3>Fetch JSON</h3><p>Basic request pattern with error handling.</p><button data-copy="fetch">Copy snippet</button><pre id="snippet-fetch" hidden>async function loadData(url) {\n  try {\n    const response = await fetch(url);\n    if (!response.ok) throw new Error(`HTTP ${response.status}`);\n    return await response.json();\n  } catch (error) {\n    console.error("Could not load data:", error);\n    throw error;\n  }\n}</pre></article>
+</div><p id="copy-status" class="small" role="status"></p></div></div></section>
+</main>
+<footer>DevDesk is an early open-source starter. Contributions, accessibility improvements, bug reports, and new tool ideas are welcome. No data is intentionally sent to a server by this single-file demo.</footer>
+<script>
+const $ = (id) => document.getElementById(id);
+const starter = $('code').value;
+function runPreview(){ $('preview').srcdoc = $('code').value; }
+runPreview();
+$('run').addEventListener('click', runPreview);
+$('reset').addEventListener('click', () => { $('code').value = starter; runPreview(); });
+document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => {
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', String(t === tab)));
+  document.querySelectorAll('.tool-view').forEach(view => view.classList.toggle('active', view.id === tab.dataset.tab));
+}));
+function processJSON(minify){
+  const status = $('json-status'), output = $('json-output');
+  try {
+    const parsed = JSON.parse($('json-input').value);
+    output.textContent = JSON.stringify(parsed, null, minify ? 0 : 2);
+    status.textContent = 'Valid JSON ✓';
+    status.style.color = 'var(--accent)';
+  } catch (error) {
+    output.textContent = '';
+    status.textContent = 'Invalid JSON: ' + error.message;
+    status.style.color = 'var(--danger)';
+  }
+}
+$('format-json').addEventListener('click', () => processJSON(false));
+$('minify-json').addEventListener('click', () => processJSON(true));
+$('clear-json').addEventListener('click', () => { $('json-input').value = ''; $('json-output').textContent = ''; $('json-status').textContent = 'Cleared.'; });
+document.querySelectorAll('[data-copy]').forEach(button => button.addEventListener('click', async () => {
+  const text = $('snippet-' + button.dataset.copy).textContent;
+  try { await navigator.clipboard.writeText(text); $('copy-status').textContent = 'Snippet copied.'; }
+  catch { $('copy-status').textContent = 'Clipboard access unavailable. Select and copy the snippet manually: ' + text; }
+}));
+</script>
+</body>
+</html>
